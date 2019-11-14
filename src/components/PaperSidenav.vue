@@ -4,10 +4,10 @@
       <li v-for="(item, index) in sideNavs"
         :key="item+index"
         class="main-meau-li"
-        @click.self="handleClick(item)">
+        >
         <span :class="{[item.icon]: true, activated: item.isActivated}"></span>&nbsp;&nbsp;
         {{item.text}}&nbsp;&nbsp;
-        <span :class="item.isShowChild ? 'iconfont icon-jianhao' : 'iconfont icon-jiahao'"></span>
+        <span @click.self="handleClick(item)" :class="item.isShowChild ? 'iconfont icon-jianhao' : 'iconfont icon-jiahao'"></span>
         <ul class="child-ul" v-show="item.isShowChild">
           <li v-for="(itemChild, indexCh) in item.children" :key="itemChild+indexCh"
               :class="{LichildActivated: itemChild.isActivated}"
@@ -22,10 +22,12 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      sideNavs: [
+      sideNavs: [],
+      clientSideNavs: [
         {
           icon: 'iconfont icon-baobiao',
           isActivated: false,
@@ -65,7 +67,7 @@ export default {
               icon: '',
               text: '做作业',
               path: '/index/todoAssignment',
-              isActivated: false
+              isActivated: true
             },
             {
               icon: '',
@@ -87,11 +89,41 @@ export default {
             }
           ]
         }
+      ],
+      adminSideNavs: [
+        {
+          icon: 'iconfont icon-chuti',
+          isActivated: true,
+          text: '我要出题',
+          isShowChild: false,
+          children: [
+            {
+              icon: '',
+              text: '开始出题',
+              isActivated: true
+            }
+          ]
+        }
       ]
     }
   },
+  computed: {
+    ...mapState('user', {
+      user: state => state.user
+    })
+  },
   mounted () {
     this.$refs['side-nav'].style.height = (window.innerHeight - 60) + 'px'
+    if (this.user) {
+      if (this.user.mode === '1') {
+        this.sideNavs = this.clientSideNavs
+      } else if (this.user.mode === '2') {
+        this.sideNavs = this.adminSideNavs
+      } else {
+        this.$message.info('用户身份可疑！！')
+        this.$router.replace('/')
+      }
+    }
   },
   methods: {
     handleClick (item) {
@@ -136,8 +168,8 @@ export default {
 }
 
 .LichildActivated {
-    border-right: 8px solid seagreen;
-    border-radius: 100%;
+    border-right: 4px solid seagreen;
+    /* border-radius: 100%; */
 }
 
 .self-router-link {

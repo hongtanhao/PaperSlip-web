@@ -67,7 +67,6 @@ export default {
     width: 100%;
 }
 .select-option {
-    margin: 4px;
     border-radius: 8px;
     height: 100%;
     border: 1px solid seagreen;

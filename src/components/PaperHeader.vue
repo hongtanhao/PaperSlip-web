@@ -1,13 +1,36 @@
 
 <template>
     <div class="header">
-      <div class="logo">
-        <span class="iconfont icon-changjianwenti">AssignmentSystem</span>
-      </div>
+      <a-row type="flex">
+        <a-col :span="12">
+          <div class="logo">
+            <span class="iconfont icon-changjianwenti">AssignmentSystem</span>
+          </div>
+        </a-col>
+        <a-col :offset="10" :span="2" style="text-align: right">
+          <a-dropdown>
+            <p class="ant-dropdown-link" href="#"><img src="/static/images/avarta.svg"  width="20px"/> Hover me <a-icon type="down" /> </p>
+            <a-menu slot="overlay">
+              <a-menu-item key="0">
+                <p><span class="iconfont icon-sinaweibo18 pos"></span>设置</p>
+              </a-menu-item>
+              <a-menu-divider />
+              <a-menu-item key="3">
+                <p @click="handleQuit"><span class="iconfont icon-tuichu2 pos"></span>退出</p>
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
+        </a-col>
+      </a-row>
     </div>
 </template>
 <script>
 export default {
+  methods: {
+    handleQuit () {
+      this.$router.push({path: '/'})
+    }
+  }
 }
 </script>
 <style scoped>
@@ -19,4 +42,7 @@ export default {
   text-align: left;
 }
 
+.pos {
+  margin-right: 1rem;
+}
 </style>

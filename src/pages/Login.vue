@@ -1,20 +1,14 @@
 <template>
   <div class="login">
-    <img/>
-    <div class="fill-login-msg">
-      <div class="gutter-vertical">请登录</div>
-      <a-input class="gutter-vertical" placeholder="userName" v-model="userName" ref="userNameInput">
-        <a-icon slot="prefix" type="user" />
-      </a-input>
-      <a-input class="gutter-vertical" type="password" placeholder="password" v-model="password" ref="passwordInput">
-        <a-icon slot="prefix" type="key" />
-      </a-input>
-      <a-button type="primary" style="margin-top: 2rem" @click="handleClick">login</a-button>
-    </div>
+    <login-bg/>
+    <login-msg/>
   </div>
 </template>
 <script>
+import LoginBg from '@/components/LoginBg'
+import LoginMsg from '@/components/LoginMsg'
 export default {
+  components: {LoginBg, LoginMsg},
   name: 'login',
   data () {
     return {
@@ -34,6 +28,7 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 
 .fill-login-msg {

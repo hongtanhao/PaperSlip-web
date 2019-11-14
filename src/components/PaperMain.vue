@@ -24,16 +24,16 @@ export default {
     }
   },
   mounted () {
-    this.$refs['right-main'].style.backgroundColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.1)`
+    this.$refs['right-main'].style.backgroundColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.3)`
   },
   methods: {
     toggle () {
       if (this.isSpreadedSideNav) {
-        this.arraw = '<<'
+        this.arraw = '>>'
         this.$refs['left-nav'].style.left = '-12%'
         this.$refs['right-main'].style.width = '100%'
       } else {
-        this.arraw = '>>'
+        this.arraw = '<<'
         this.$refs['left-nav'].style.left = '0'
         this.$refs['right-main'].style.width = '88%'
       }
@@ -58,7 +58,7 @@ export default {
   width: 88%;
   position: absolute;
   right: 0;
-  padding: 1rem;
+  padding: 2rem;
   box-sizing: border-box;
 }
 

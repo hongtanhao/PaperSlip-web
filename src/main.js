@@ -3,17 +3,29 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-// import css
-import '../static/css/reset.css'
+import store from './store'
+import axiosPlugin from './plugins/axios-plugin'
 
 import 'ant-design-vue/dist/antd.css'
-import { DatePicker, Select, Button, Input, Icon } from 'ant-design-vue'
 
+// import css
+import '../static/css/reset.css'
+import { Row, Col, DatePicker, Select, Button, Input, Icon, Table, Dropdown, Menu, Tabs } from 'ant-design-vue'
+
+Vue.use(axiosPlugin)
+
+Vue.use(Row)
+Vue.use(Col)
 Vue.use(DatePicker)
 Vue.use(Select)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Icon)
+Vue.use(Table)
+Vue.use(Dropdown)
+Vue.use(Menu)
+Vue.use(Tabs)
+// Vue.use(MenuDivider)
 
 Vue.config.productionTip = false
 
@@ -21,6 +33,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
