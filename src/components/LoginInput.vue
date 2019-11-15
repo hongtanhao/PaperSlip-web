@@ -19,11 +19,14 @@ export default {
       password: '请输入密码'
     }
   },
-  ...mapState('user', {
-    user: state => state.user
-  }),
+  computed: {
+    ...mapState({
+      user: state => state.user.user
+    })
+  },
   methods: {
     handleClick () {
+      console.log(this.user)
       if (this.user) {
         if (this.user.mode === '1') {
           this.$router.push('/index/todoAssignment')

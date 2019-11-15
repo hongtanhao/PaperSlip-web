@@ -7,7 +7,8 @@
         >
         <span :class="{[item.icon]: true, activated: item.isActivated}"></span>&nbsp;&nbsp;
         {{item.text}}&nbsp;&nbsp;
-        <span @click.self="handleClick(item)" :class="item.isShowChild ? 'iconfont icon-jianhao' : 'iconfont icon-jiahao'"></span>
+        <span @click.self="handleClick(item)" :class="item.isShowChild ? 'iconfont icon-arrDnR-fill' : 'iconfont icon-right'">
+        </span>
         <ul class="child-ul" v-show="item.isShowChild">
           <li v-for="(itemChild, indexCh) in item.children" :key="itemChild+indexCh"
               :class="{LichildActivated: itemChild.isActivated}"
@@ -95,7 +96,7 @@ export default {
           icon: 'iconfont icon-chuti',
           isActivated: true,
           text: '我要出题',
-          isShowChild: false,
+          isShowChild: true,
           children: [
             {
               icon: '',

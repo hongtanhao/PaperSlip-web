@@ -1,8 +1,8 @@
 <template>
- <div class="monaco-editor">
-    <a-row type="flex" justify="space-around" align="middle">
+  <div class="monaco-editor">
+    <a-row type="flex" justify="start">
       <a-col :span="12">
-        <div>
+        <div class="fix-pos">
           <label><img src="/static/images/lang.svg" width="20px"/></label>
           <a-select :defaultValue="langType" style="width: 160px;"  @change="handleChangeLangMode">
             <a-select-option v-for="(item, index) in langModes"
@@ -10,10 +10,6 @@
               :value="index">{{item.modeId}}
             </a-select-option>
           </a-select>
-        </div>
-      </a-col>
-      <a-col :span="12">
-        <div>
           <label><img src="/static/images/theme.svg" width="20px"/></label>
           <a-select defaultValue="Visual Studio Dark" style="width: 200px;" @change="handleChangeTheme">
             <a-select-option v-for="(item, index) in themes" :key="index" :value="index">{{item.text}}</a-select-option>
@@ -66,16 +62,9 @@ export default {
         }
       })
     })()
-    // for (let i = 0; i < this.langModes.length; i++){
-    //   if (this.langType === this.langModes[i].modeId) {
-    //     this.currentMOde = this.langModes[i].modeId
-    //     this.currentMOdeIndex = i;
-    //     break;
-    //   }
-    // }
   },
   mounted () {
-    console.log('this.langType', this.langType)
+    let h = window.innerHeight - 220
     for (let i = 0; i < this.langModes.length; i++){
       if (this.langType === this.langModes[i].modeId) {
         this.currentMOde = this.langModes[i].modeId
@@ -83,10 +72,10 @@ export default {
         break;
       }
     }
-    this.$refs['editor'].style.height = (window.innerHeight - 265) + 'px'
     this.createEditor()
+    this.setEditorH(h)
     this.handleChangeTheme(1)
-    this.getData()
+    this.editor.layout()
   },
   methods: {
     createEditor () {
@@ -102,29 +91,30 @@ export default {
       }
     },
     getMode () {
-      if (this.editor) {
-        return this.editor.getModel()
-      }
-      return 'not found!'
+      return this.editor.getModel()
     },
-    setMode (data, modeId) {
-      this.editor.setModel(monaco.editor.createModel(data, modeId))
+    setMode (modeId) {
+      this.currentMOde = modeId
+      this.editor.setModel(monaco.editor.createModel(this.code, modeId))
     },
-    handleChangeLangMode (item) {
-      this.currentMOdeIndex = item
-      this.setMode(this.code, this.langModes[item].modeId)
+    setEditorH (h) {
+      this.$refs['editor'].style.height = h + 'px'
     },
-    handleChangeTheme (theme) {
+    setTheme (theme) {
       var newTheme = (theme === 1 ? 'vs-dark' : (theme === 0 ? 'vs' : 'hc-black'))
       monaco.editor.setTheme(newTheme)
     },
-    getData (mode) {
-      this.$axios.get('../../static/lib/monaco/samples/sample.javascript.txt').then(response => {
-        if (response) {
-          this.code = response.data
-          this.setMode(this.code, this.currentMOde)
-        }
-      })  
+    initCode (code) {
+      this.code = code
+      this.editor.setModel(monaco.editor.createModel(code, this.currentMOde))
+      this.editor.layout()
+    },
+    handleChangeLangMode (item) {
+      this.currentMOdeIndex = item
+      this.setMode(this.langModes[item].modeId)
+    },
+    handleChangeTheme (theme) {
+      this.setTheme(theme)
     },
   }
 }
@@ -141,7 +131,14 @@ export default {
   position: relative;
   margin-top: 2rem;
   width: 100%;
-  height: 300px;
+  min-height: 300px;
   text-align: left;
+  overflow: hidden;
+}
+
+.fix-pos {
+  position: absolute;
+  top: -48px;
+  left: -42px;
 }
 </style>

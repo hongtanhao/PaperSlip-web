@@ -10,6 +10,7 @@ import 'ant-design-vue/dist/antd.css'
 
 // import css
 import '../static/css/reset.css'
+import './utils/dateUtil'
 import { Row, Col, DatePicker, Select, Button, Input, Icon, Table, Dropdown, Menu, Tabs } from 'ant-design-vue'
 
 Vue.use(axiosPlugin)
