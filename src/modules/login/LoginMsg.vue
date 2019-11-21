@@ -4,14 +4,12 @@
       <a-tabs :defaultActiveKey="mode" @change="handleChangeTab">
         <a-tab-pane key="1">
           <span slot="tab">
-            <!-- <a-icon type="apple" /> -->
-            做题模式
+            答题模式
           </span>
           <login-input/>
         </a-tab-pane>
         <a-tab-pane key="2">
           <span slot="tab">
-            <!-- <a-icon type="android" /> -->
             出题模式
           </span>
          <login-input/>
@@ -37,13 +35,12 @@ export default {
       mode: state => state.user.user.mode
     })
   },
+  mounted () {
+    console.log(this.mode)
+  },
   methods: {
     handleChangeTab (item) {
-      // this.$store.commit({
-      //   type: 'user/CHANGE_USER_MODE',
-      //   value: {mode: item}
-      // })
-      this['user/CHANGE_USER_MODE']({value: {mode: String(item)}})
+      this['user/CHANGE_USER_MODE']({value: String(item)})
     },
     ...mapMutations([
       'user/CHANGE_USER_MODE'
@@ -57,7 +54,7 @@ export default {
   height: 300px;
   position: fixed;
   top: 200px;
-  right: 150px;
+  right: 200px;
   padding: 2rem;
   border-radius: 8px;
 }

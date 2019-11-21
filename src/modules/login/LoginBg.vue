@@ -4,9 +4,9 @@
 </template>
 <script>
 /* eslint-disable */
-import * as THREE from '../../static/lib/three/three.module.js';
-import { TWEEN } from '../../static/lib/three/jsm/tween.module.min.js';
-import { OrbitControls } from '../../static/lib/three/jsm/controls/OrbitControls.js';
+import * as THREE from '@/../static/lib/three/three.module.js';
+import { TWEEN } from '@/../static/lib/three/jsm/tween.module.min.js';
+import { OrbitControls } from '@/../static/lib/three/jsm/controls/OrbitControls.js';
 export default {
   name: 'login-bg',
   data () {

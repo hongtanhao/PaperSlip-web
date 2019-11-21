@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/pages/Login'
+import Register from '@/modules/register'
+import Login from '@/modules/login'
 import Index from '@/pages/Index'
 import TodoAssignment from '@/components/TodoAssignment'
 import EditingAssignment from '@/components/EditingAssignment'
@@ -12,9 +13,14 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
     },
     {
       path: '/index',

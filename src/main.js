@@ -10,8 +10,11 @@ import 'ant-design-vue/dist/antd.css'
 
 // import css
 import '../static/css/reset.css'
+
+import 'jquery'
 import './utils/dateUtil'
-import { Row, Col, DatePicker, Select, Button, Input, Icon, Table, Dropdown, Menu, Tabs } from 'ant-design-vue'
+
+import { Row, Col, DatePicker, Select, Button, Input, Icon, Table, Dropdown, Menu, Tabs, Modal, Radio, message } from 'ant-design-vue'
 
 Vue.use(axiosPlugin)
 
@@ -26,7 +29,11 @@ Vue.use(Table)
 Vue.use(Dropdown)
 Vue.use(Menu)
 Vue.use(Tabs)
-// Vue.use(MenuDivider)
+Vue.use(Modal)
+Vue.use(Radio)
+
+Vue.prototype.$message = message
+Vue.prototype.$confirm = Modal.confirm
 
 Vue.config.productionTip = false
 

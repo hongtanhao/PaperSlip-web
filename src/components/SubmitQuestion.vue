@@ -12,7 +12,7 @@
                   <span :class="item.icon"></span> {{item.value}}
                 </a-select-option>
               </a-select>
-              <a-button type="primary" style="margin-left: 460px;">
+              <a-button type="primary" @click="submitQuestion" style="margin-left: 460px;">
                 <span style="margin-right: 1rem" class="iconfont icon-submit"></span> 提交
                </a-button>
             </a-col>
@@ -20,10 +20,13 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'submit-question',
   data () {
     return {
+      level: '',
+      langType: '',
       programLangs: [
         {
           value: 'html',
@@ -66,9 +69,35 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapState({
+      user: state => state.user.user,
+      editor: state => state.editor.editor
+    })
+  },
   methods: {
-    handleChangeLang () {},
-    handleChangeLevel () {}
+    handleChangeLang (item) {
+      this.langType = item
+    },
+    handleChangeLevel (item) {
+      this.level = item
+    },
+    submitQuestion () {
+      let data = {
+        id: 'ASSIGN' + new Date().format('YYYYMMDDhhmmss') + new Date().getTime(),
+        author: this.user.name,
+        langType: this.item,
+        createTime: new Date().format('YYYY-MM-DD hh:mm:ss'),
+        toppicContent: this.editor.content,
+        level: this.level
+      }
+      this.$axios.post('http://localhost:8090/assignment/question/save', data).then(response => {
+        if (response) {
+          this.$refs['editor'].setEditorH(window.innerHeight - 220)
+          this.$refs['editor'].initCode(response.data)
+        }
+      })
+    }
   }
 }
 </script>

@@ -1,3 +1,2 @@
-export default {
-   
-}
+export const CHANG_EDITOR_CONTENT = 'CHANG_EDITOR_CONTENT'
+export const CHANGE_EDITOR_MODE = 'CHANGE_EDITOR.MODE'
