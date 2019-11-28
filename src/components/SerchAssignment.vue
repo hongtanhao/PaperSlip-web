@@ -4,25 +4,26 @@
         <a-row type="flex" justify="space-around" align="middle">
           <a-col :span="3">
             <span class="iconfont icon-tiaojian" style="fontSize: 12px"></span>&nbsp;
-            <span>请选择：</span>
+            <span>请选择查询条件：</span>
           </a-col>
           <a-col :span="3">
-            <a-select defaultValue="wind" style="width: 160px;" @change="handleChangeAuthor">
-              <a-select-option  v-for="(item, index) in authors" :key="item+index" :value="item.value">
+            <a-select defaultValue="出题者" style="width: 160px;" @change="handleChangeAuthor">
+              <a-select-option  v-for="(item, index) in authors" :key="item+index" :value="item.id">
                 <span><img src="" /></span>
-                <span>{{item.value}}</span>
+                <span>{{item.name}}</span>
               </a-select-option>
             </a-select>
           </a-col>
           <a-col :span="3">
-            <a-select defaultValue="基础" style="width: 160px;" @change="handleChangeLang">
-              <a-select-option  v-for="(item, index) in levels" :key="item+index" :value="item.value">
+            <span></span>
+            <a-select defaultValue="难度" style="width: 160px;" @change="handleChangeLevel">
+              <a-select-option  v-for="(item, index) in levels" :key="item+index" :value="item.level">
                 <span :class="item.icon"></span> {{item.value}}
               </a-select-option>
             </a-select>
           </a-col>
           <a-col :span="3">
-            <a-select defaultValue="javascript" style="width: 160px;" @change="handleChangeLevel">
+            <a-select defaultValue="编程语言" style="width: 160px;" @change="handleChangeLang">
               <a-select-option  v-for="(item, index) in programLangs" :key="item+index" :value="item.value">
                 <span :class="item.icon"></span> {{item.value}}
               </a-select-option>
@@ -32,7 +33,7 @@
             <a-range-picker  @change="handleChangeDate" />
           </a-col>
           <a-col :span="2">
-            <a-button type="primary" style="text-align: right">查找</a-button>
+            <a-button type="primary" style="text-align: right" @click="handleQueryQuestion">查找</a-button>
           </a-col>
         </a-row>
       </div>
@@ -43,6 +44,10 @@ export default {
   name: 'serch-work',
   data () {
     return {
+      langType: '',
+      selectDate: '',
+      qUserId: '',
+      level: '',
       programLangs: [
         {
           value: 'html',
@@ -64,38 +69,76 @@ export default {
       levels: [
         {
           value: '基础',
+          level: '1',
           icon: 'iconfont icon-tong1'
         },
         {
           value: '中级',
+          level: '2',
           icon: 'iconfont icon-yin'
         },
         {
           value: '进阶',
+          level: '3',
           icon: 'iconfont icon-jin'
         },
         {
           value: '高级',
+          level: '4',
           icon: 'iconfont icon-zuanshi'
         }
       ],
       authors: [
-        {
-          value: 'wind',
-          icon: 'iconfont icon-css1'
-        }
       ]
     }
+  },
+  created () {
+    // 获取出题者列表
+    this.$axios.get('user/allLists').then(res => {
+      if (res && res.code === '000000') {
+        this.authors = res.data.filter(item => item.role === '2')
+      }
+    })
   },
   watch: {
   },
   methods: {
-    handleChangeLang (date, dateString) {
-      console.log(date, dateString)
+    handleChangeLang (item) {
+      this.langType = item
     },
-    handleChangeDate () {},
-    handleChangeAuthor () {},
-    handleChangeLevel () {}
+    handleChangeDate (item) {
+      this.selectDate = item
+    },
+    handleChangeAuthor (item) {
+      this.qUserId = item
+    },
+    handleChangeLevel (item) {
+      this.level = item
+    },
+    handleQueryQuestion () {
+      this.getQuestionLists()
+    },
+    getQuestionLists () {
+      let data = {
+        teacherId: this.qUserId,// 出题者
+        userId: this.qUserId,// 答题者
+        createTime: this.selectDate,
+        langType: this.langType,
+        level: this.level
+      }
+      this.$axios.post('question/partLists', data).then(res => {
+        if (res && res.code === '000000') {
+          let data = res.data.map((item, index) => {
+            item.key = index
+            item.order = index + 1
+            return item
+          })
+          this.$emit('getData', data)
+        } else {
+          this.$message.error('题目查询失败')
+        }
+      })
+    }
   }
 }
 </script>

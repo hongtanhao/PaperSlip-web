@@ -53,7 +53,8 @@ export default {
           if (response.data && response.data.length === 1) {
             let user = response.data[0]
             // 校验密码
-            if (this.password !== user.password) {
+            // eslint-disable-next-line
+            if ($.md5(this.password) !== user.password) {
               this.$message.warning('用户密码不正确, 请重新输入！')
               return
             }
@@ -65,9 +66,9 @@ export default {
             // 缓存用户信息
             this['user/SET_USER']({value: user})
             if (this.user.mode === '1') {
-              this.$router.push('/index/todoAssignment')
+              this.$router.push('/index/list')
             } else if (this.user.mode === '2') {
-              this.$router.push('/index/setQuestion')
+              this.$router.push('/index/question')
             } else {
               this.$message.warning('登录系统的模式不支持！')
               this.$router.replace('/login')

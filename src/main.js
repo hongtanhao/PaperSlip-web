@@ -14,10 +14,11 @@ import '../static/css/reset.css'
 import 'jquery'
 import './utils/dateUtil'
 
-import { Row, Col, DatePicker, Select, Button, Input, Icon, Table, Dropdown, Menu, Tabs, Modal, Radio, message } from 'ant-design-vue'
+import { Avatar, Row, Col, DatePicker, Select, Button, Input, Icon, Table, Dropdown, Menu, Tabs, Modal, Radio, message } from 'ant-design-vue'
 
 Vue.use(axiosPlugin)
 
+Vue.use(Avatar)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(DatePicker)

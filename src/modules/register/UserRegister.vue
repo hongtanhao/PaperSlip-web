@@ -48,6 +48,14 @@
               <a-radio-group :options="plainOptions" @change="handleUserRole" :defaultValue="value1" />
           </a-col>
         </a-row>
+        <a-row type="flex" style="margin-top: 15px">
+        <a-col :span="6" style="text-align:right;padding-right: 1rem">
+            <span style="color: red;">*</span>注意:
+        </a-col>
+        <a-col :span="10" style="text-align:left">
+           如果您注册时选择的用户角色是答题者，则只能以答题模式登入此系统，如果你想既有答题者的身份又想有出题者的身份则只能申请用户身份加权，但此功能目前不支持！
+        </a-col>
+        </a-row>
         <a-row type="flex" style="margin-top: 45px;margin-bottom: 45px">
          <a-col :offset="6" :span="6" style="text-align:left;padding-right: 1rem">
              <a-button type="primary" @click="handleRegister" :disabled="notEnableRe">注册</a-button>
@@ -56,6 +64,8 @@
     </div>
 </template>
 <script>
+import Md5 from '@/utils/md5'
+Md5()
 export default {
   name: 'todo-assignment',
   data () {
@@ -182,7 +192,8 @@ export default {
       let data = {
         id: this.userName.charCodeAt() + new Date().format('YYYYMMDDhhmmss') + 'A' + Math.ceil((Math.random() + 1) * 10000),
         name: this.userName,
-        password: this.password,
+        // eslint-disable-next-line
+        password: $.md5(this.password),
         role: this.role,
         createTime: new Date().format('YYYY-MM-DD hh:mm:ss'),
         grade: '1',

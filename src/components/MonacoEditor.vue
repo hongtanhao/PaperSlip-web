@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     ...mapState({
-      langType: state => state.assignment.work.langType
+      langType: state => state.editor.editor.mode
     })
   },
   created () {
@@ -74,8 +74,9 @@ export default {
     }
     this.createEditor()
     this.setEditorH(h)
-    this.handleChangeTheme(1)
+    this.setTheme(1)
     this.editor.layout()
+    console.log('langType', this.langType)
   },
   methods: {
     createEditor () {
@@ -90,8 +91,11 @@ export default {
         }
       }
     },
-    getMode () {
+    getModel () {
       return this.editor.getModel()
+    },
+    getContent () {
+      return this.editor._domElement.innerText
     },
     setMode (modeId) {
       this.currentMOde = modeId
@@ -139,6 +143,6 @@ export default {
 .fix-pos {
   position: absolute;
   top: -48px;
-  left: -42px;
+  left: 0px;
 }
 </style>

@@ -7,11 +7,11 @@ axiosPlugin.install = (Vue, options) => {
   const service = axios.create({
     ...options,
     baseURL: 'http://localhost:8090/assignment/',
-    timeout: 1000
+    timeout: 5000
   })
   service.interceptors.request.use(function (config) {
     console.log('******************上送报文*****************')
-    console.log(JSON.parse(config.data))
+    console.log(config)
     return config
   }, function (error) {
     return Promise.reject(error)
@@ -32,7 +32,7 @@ axiosPlugin.install = (Vue, options) => {
       ...{
         method: 'get',
         url,
-        params: qs.stringify(data)
+        params: data && JSON.stringify(data)
       }
     }
     return service(axiosOpt)
@@ -43,7 +43,7 @@ axiosPlugin.install = (Vue, options) => {
       ...{
         method: 'post',
         url,
-        data: JSON.stringify(data)
+        data: data && JSON.stringify(data)
       }
     }
     return service(axiosOpt)

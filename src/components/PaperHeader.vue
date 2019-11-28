@@ -9,7 +9,7 @@
         </a-col>
         <a-col :offset="10" :span="2" style="text-align: right">
           <a-dropdown>
-            <p class="ant-dropdown-link" href="#"><img src="/static/images/avarta.svg"  width="20px"/> Hover me <a-icon type="down" /> </p>
+            <p class="ant-dropdown-link" href="#"><img src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"  width="20px"/> {{user.info.name}}<a-icon type="down" /> </p>
             <a-menu slot="overlay">
               <a-menu-item key="0">
                 <p><span class="iconfont icon-sinaweibo18 pos"></span>设置</p>
@@ -25,7 +25,13 @@
     </div>
 </template>
 <script>
+import {mapState} from 'vuex'
 export default {
+  computed: {
+    ...mapState({
+      user: state => state.user.user
+    })
+  },
   methods: {
     handleQuit () {
       this.$router.push({path: '/'})

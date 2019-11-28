@@ -3,15 +3,20 @@ import Router from 'vue-router'
 import Register from '@/modules/register'
 import Login from '@/modules/login'
 import Index from '@/pages/Index'
+import Question from '@/modules/question'
+import Answer from '@/modules/answer'
 import TodoAssignment from '@/components/TodoAssignment'
-import EditingAssignment from '@/components/EditingAssignment'
-import SetQuestion from '@/components/SetQuestion'
 
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/',
+      name: 'Login',
+      component: Login
+    },
     {
       path: '/login',
       name: 'Login',
@@ -28,19 +33,19 @@ export default new Router({
       component: Index,
       children: [
         {
-          path: 'todoAssignment',
-          name: 'todoAssignment',
+          path: 'list',
+          name: 'list',
           component: TodoAssignment
         },
         {
-          path: 'editingAssignment',
-          name: 'editingAssignment',
-          component: EditingAssignment
+          path: 'question',
+          name: 'question',
+          component: Question
         },
         {
-          path: 'setQuestion',
-          name: 'setQuestion',
-          component: SetQuestion
+          path: 'answer',
+          name: 'answer',
+          component: Answer
         }
       ]
     }
