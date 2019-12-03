@@ -107,7 +107,6 @@ export default {
         render();
         animate();
     })()
-    console.log('three', THREE)
   }
 }
 </script>

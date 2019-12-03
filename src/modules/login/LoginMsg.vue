@@ -36,7 +36,6 @@ export default {
     })
   },
   mounted () {
-    console.log(this.mode)
   },
   methods: {
     handleChangeTab (item) {

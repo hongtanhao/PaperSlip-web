@@ -13,8 +13,6 @@ export default {
     })
   },
   mounted () {
-    console.log('state', this.$store)
-    console.log('state', this.topic)
   }
 }
 </script>

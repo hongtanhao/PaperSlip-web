@@ -1,9 +1,13 @@
 <template>
-    <div class="assignment-list">
-      <a-table :columns="columns" :dataSource="topicLists" :scroll="scroll">
-        <a slot="action" slot-scope="record, index" @click.self="startDoAssign(record, index)">开始做题</a>
-      </a-table>
-    </div>
+  <div class="assignment-list">
+    <a-row type="flex" justify="center">
+      <a-col>
+        <a-table bordered :columns="columns" :dataSource="topicLists" :scroll="scroll">
+          <a slot="action" slot-scope="record, index" @click.self="startDoAssign(record, index)">浏览</a>
+        </a-table>
+      </a-col>
+    </a-row>
+  </div>
 </template>
 <script>
 export default {
@@ -12,27 +16,24 @@ export default {
   data () {
     return {
       scroll: {
-        x: 1500, y: 1800
+        x: 1500, y: 600
       },
       columns: [
-        { title: '序号', width: 100, dataIndex: 'order', key: 'order', fixed: 'left' },
-        { title: '作者', width: 100, dataIndex: 'userId', key: 'userId', fixed: 'left' },
-        { title: '编程语言', width: 100, dataIndex: 'langType', key: 'langType', fixed: 'left' },
+        { title: '序号', dataIndex: 'order', key: 'order', width: 150 },
+        { title: '作者', dataIndex: 'name', key: 'name', width: 150 },
+        { title: '编程语言', dataIndex: 'langType', key: 'langType', width: 150 },
         { title: '创建时间', dataIndex: 'createTime', key: 'createTime', width: 150 },
-        { title: '题目', dataIndex: 'topic', key: 'topic', width: 350 },
-        { title: '等级', dataIndex: 'level', key: 'level', width: 100 },
+        { title: '题目', dataIndex: 'topicContent', key: 'topicContent', width: 650 },
+        { title: '等级', dataIndex: 'level', key: 'level', width: 150 },
         {
           title: '操作',
           key: 'operation',
-          fixed: 'right',
-          width: 100,
           scopedSlots: { customRender: 'action' }
         }
       ]
     }
   },
   mounted () {
-    console.log('this.topicLists', this.topicLists)
   },
   computed: {
     topicLists () {
@@ -45,7 +46,7 @@ export default {
         type: 'assignment/CHANGE_TOPIC',
         value: args[0]
       })
-      this.$router.push({path: '/index/answer'})
+      this.$router.push({ path: '/index/questionDetail' })
     }
   }
 }

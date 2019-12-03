@@ -2,14 +2,12 @@
     <div class="submit-question">
         <a-row type="flex" justify="end" align="middle">
             <a-col :span="24" style="text-align: right">
-              <label>请设置题目类型</label>
-              <a-select defaultValue="" style="width: 160px;" @change="handleChangeLang">
+              <a-select defaultValue="请设置题目类型" style="width: 160px;" @change="handleChangeLang">
                   <a-select-option  v-for="(item, index) in programLangs" :key="item+index" :value="item.value">
                     <span :class="item.icon"></span> {{item.value}}
                   </a-select-option>
               </a-select>
-             <label style="margin-left: 100px;">请设置题目难度</label>
-              <a-select defaultValue="" style="width: 160px;" @change="handleChangeLevel">
+              <a-select defaultValue="请设置题目难度" style="width: 160px;margin-left: 100px;" @change="handleChangeLevel">
                 <a-select-option  v-for="(item, index) in levels" :key="item+index" :value="item.level">
                   <span :class="item.icon"></span> {{item.value}}
                 </a-select-option>
@@ -94,7 +92,7 @@ export default {
     handleSubmitQuestion () {
       let data = {
         id: 'ASSIGN' + new Date().format('YYYYMMDDhhmmss') + new Date().getTime(),
-        userId: this.user.info.id,
+        teacherId: this.user.info.id,
         langType: this.langType,
         createTime: new Date().format('YYYY-MM-DD hh:mm:ss'),
         level: this.level

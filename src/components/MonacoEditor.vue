@@ -76,7 +76,6 @@ export default {
     this.setEditorH(h)
     this.setTheme(1)
     this.editor.layout()
-    console.log('langType', this.langType)
   },
   methods: {
     createEditor () {

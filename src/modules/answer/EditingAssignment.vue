@@ -3,7 +3,7 @@
       <a-row type="flex" justify="end">
         <a-col :span="12" style="text-align: right">
           <a-button type="primary" @click="replaceTopic"><span class="iconfont icon-huan pos"></span>换题</a-button>
-          <a-button type="primary" @click="replaceTopic"><span class="iconfont icon-group8 pos"></span>提交</a-button>
+          <a-button type="primary" @click="submitAnswer"><span class="iconfont icon-group8 pos"></span>提交</a-button>
         </a-col>
        </a-row>
       <a-row :span='24' justify="start">
@@ -24,7 +24,8 @@ export default {
   },
   computed: {
     ...mapState({
-      work: state => state.assignment.work
+      work: state => state.assignment.work,
+      user: state => state.user.user
     })
   },
   beforeRouteEnter (to, from, next) {
@@ -46,12 +47,49 @@ export default {
       this.$router.replace({path: '/index/list'})
     },
     getData () {
-      let data = `/**\n* 开始日期：${new Date().format('YYYY/MM/DD hh:mm:ss')}\n* 功能：${this.work.topic}\n**/`
+      let data = ''
       this.$refs['editor'].setEditorH(window.innerHeight - 220)
+      if (this.work.answerContent) {
+        data = this.work.answerContent
+      } else {
+        data = `/**\n* 开始日期：${new Date().format('YYYY/MM/DD hh:mm:ss')}\n* 功能：${this.work.topicContent}\n**/`
+      }
       this.$refs['editor'].initCode(data)
       this['editor/CHANGE_EDITOR_MODE']({value: this.work.langType})
       this.$refs['editor'].setMode(this.work.langType)
-      console.log('this.work', this.work)
+    },
+    filterAnswerContent (value) {
+      return value.replace(/\d+\n/g, '')
+    },
+    submitAnswer () {
+      let data = {
+        id: 'ASSIGN_ANSWER' + new Date().format('YYYYMMDDhhmmss') + new Date().getTime(),
+        studentId: this.user.info.id,
+        teacherId: this.work.teacherId,
+        questionId: this.work.id,
+        answerContent: this.filterAnswerContent(this.$refs['editor'].getContent()),
+        firstCreateTime: new Date().format('YYYY-MM-DD hh:mm:ss'),
+        checkStatus: '0'
+      }
+      if (this.work.answerContent) {
+        data.id = this.work.answerId
+        data.lastModifyTime = new Date().format('YYYY-MM-DD hh:mm:ss')
+        this.$axios.post('answer/update', data).then(res => {
+          if (res && res.code === '000000') {
+            this.$message.success('答案提交成功')
+          } else {
+            this.$message.success('答案提交失败')
+          }
+        })
+      } else {
+        this.$axios.post('answer/save', data).then(res => {
+          if (res && res.code === '000000') {
+            this.$message.success('答案提交成功')
+          } else {
+            this.$message.success('答案提交失败')
+          }
+        })
+      }
     }
   }
 }

@@ -185,7 +185,6 @@ export default {
       }
     },
     handleUserRole (e) {
-      console.log(e)
       this.role = e.target.value
     },
     handleRegister () {

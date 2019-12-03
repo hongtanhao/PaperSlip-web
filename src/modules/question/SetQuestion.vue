@@ -20,12 +20,11 @@ export default {
       'editor/CHANGE_EDITOR_MODE'
     ]),
     filterText (text) {
-      return text.replace(/\d+\n/, '')
+      return (text.replace(/\d+\n/g, '')).replace(/#+/, '')
     },
     handleSubmitQuestion (data) {
       let content = this.$refs['editor'].getContent()
       data = JSON.parse(data)
-      console.log(data)
       data.topicContent = this.filterText(content)
       this.$axios.post('question/save', data).then(res => {
         if (res.code === '000000') {

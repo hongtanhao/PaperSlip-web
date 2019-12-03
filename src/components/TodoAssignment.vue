@@ -18,13 +18,11 @@ export default {
   methods: {
     handleGetData (item) {
       this.taData = item
-      console.log('this.taData', this.taData)
     }
   }
 }
 </script>
 <style scoped>
   .todo-assign {
-    /* background-color: rgb(222,225,230); */
   }
 </style>

@@ -9,7 +9,7 @@
         </a-col>
         <a-col :offset="10" :span="2" style="text-align: right">
           <a-dropdown>
-            <p class="ant-dropdown-link" href="#"><img src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"  width="20px"/> {{user.info.name}}<a-icon type="down" /> </p>
+            <p class="avarta ant-dropdown-link" href="#"><img src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"  width="20px"/> <span style="color: seagreen">{{user.info.name}}</span><a-icon type="down" /> </p>
             <a-menu slot="overlay">
               <a-menu-item key="0">
                 <p><span class="iconfont icon-sinaweibo18 pos"></span>设置</p>
@@ -50,5 +50,9 @@ export default {
 
 .pos {
   margin-right: 1rem;
+}
+
+.avarta {
+  cursor: pointer;
 }
 </style>

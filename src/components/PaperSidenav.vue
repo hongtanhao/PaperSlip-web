@@ -12,7 +12,7 @@
         <ul class="child-ul" v-show="item.isShowChild">
           <li v-for="(itemChild, indexCh) in item.children" :key="itemChild+indexCh"
               :class="{LichildActivated: itemChild.isActivated}"
-              @click="handleChildClick(itemChild)">
+              @click="handleChildClick(item, itemChild)">
               <router-link :class="{'self-router-link': true, childActivated: itemChild.isActivated}" :to="{path: itemChild.path}">
                 {{itemChild.text}}
               </router-link>
@@ -29,67 +29,67 @@ export default {
     return {
       sideNavs: [],
       clientSideNavs: [
-        {
-          icon: 'iconfont icon-baobiao',
-          isActivated: false,
-          text: '作业报表',
-          isShowChild: false,
-          children: [
-            {
-              icon: '',
-              text: '周报',
-              isActivated: false
-            },
-            {
-              icon: '',
-              text: '月报',
-              isActivated: false
-            },
-            {
-              icon: '',
-              text: '年报',
-              isActivated: false
-            }
-          ]
-        },
+        // {
+        //   icon: 'iconfont icon-baobiao',
+        //   isActivated: false,
+        //   text: '作业报表',
+        //   isShowChild: false,
+        //   children: [
+        //     {
+        //       icon: '',
+        //       text: '周报',
+        //       isActivated: false
+        //     },
+        //     {
+        //       icon: '',
+        //       text: '月报',
+        //       isActivated: false
+        //     },
+        //     {
+        //       icon: '',
+        //       text: '年报',
+        //       isActivated: false
+        //     }
+        //   ]
+        // },
         {
           icon: 'iconfont icon-zuoye',
           isActivated: true,
           text: '我的作业',
           isShowChild: true,
           children: [
-            {
-              icon: '',
-              text: '已完成',
-              path: '/index/didAssignment',
-              isActivated: false
-            },
+            // {
+            //   icon: '',
+            //   text: '已完成',
+            //   path: '/index/didAssignment',
+            //   isActivated: false
+            // },
             {
               icon: '',
               text: '做作业',
-              path: '/index/todoAssignment',
+              path: '/index/list',
               isActivated: true
-            },
-            {
-              icon: '',
-              text: '需请教',
-              path: '/index/',
-              isActivated: false
             }
-          ]
-        },
-        {
-          icon: 'iconfont icon-icon',
-          isActivated: false,
-          text: '统计分析',
-          isShowChild: false,
-          children: [
-            {
-              icon: '',
-              text: '绩效'
-            }
+            // {
+            //   icon: '',
+            //   text: '需请教',
+            //   path: '/index/',
+            //   isActivated: false
+            // }
           ]
         }
+        // {
+        //   icon: 'iconfont icon-icon',
+        //   isActivated: false,
+        //   text: '统计分析',
+        //   isShowChild: false,
+        //   children: [
+        //     {
+        //       icon: '',
+        //       text: '绩效'
+        //     }
+        //   ]
+        // }
       ],
       adminSideNavs: [
         {
@@ -101,7 +101,22 @@ export default {
             {
               icon: '',
               text: '开始出题',
+              path: '/index/question',
               isActivated: true
+            }
+          ]
+        },
+        {
+          icon: 'iconfont icon-pigai',
+          isActivated: false,
+          text: '批改作业',
+          isShowChild: true,
+          children: [
+            {
+              icon: '',
+              text: '开始批改',
+              path: '/index/check',
+              isActivated: false
             }
           ]
         }
@@ -131,13 +146,14 @@ export default {
       this.sideNavs.map(item => { item.isActivated = false })
       item.isShowChild = !item.isShowChild
       item.isActivated = true
-      console.log(this.sideNavs)
     },
-    handleChildClick (item) {
+    handleChildClick (item, itemChild) {
       this.sideNavs.map(item => {
+        item.isActivated = false
         item.children.forEach(item2 => { item2.isActivated = false })
       })
       item.isActivated = true
+      itemChild.isActivated = true
     }
   }
 }

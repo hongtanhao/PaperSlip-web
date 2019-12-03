@@ -6,7 +6,6 @@ import Index from '@/pages/Index'
 import Question from '@/modules/question'
 import Answer from '@/modules/answer'
 import TodoAssignment from '@/components/TodoAssignment'
-
 Vue.use(Router)
 
 export default new Router({
@@ -43,9 +42,24 @@ export default new Router({
           component: Question
         },
         {
+          path: 'questionDetail',
+          name: 'questionDetail',
+          component: () => import('../modules/question/QuestionDetail.vue')
+        },
+        {
           path: 'answer',
           name: 'answer',
           component: Answer
+        },
+        {
+          path: 'check',
+          name: 'check',
+          component: () => import('../modules/answer/QueryAnswerContent.vue')
+        },
+        {
+          path: 'checkAnswer',
+          name: 'checkAnswer',
+          component: () => import('../modules/answer/CheckAnswerContent.vue')
         }
       ]
     }

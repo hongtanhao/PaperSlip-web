@@ -6,21 +6,22 @@ axiosPlugin.install = (Vue, options) => {
   axios.defaults.headers.post['Content-Type'] = 'application/json'
   const service = axios.create({
     ...options,
-    baseURL: 'http://localhost:8090/assignment/',
+    baseURL: 'http://47.104.139.117:80/assignment/',
     timeout: 5000
   })
   service.interceptors.request.use(function (config) {
-    console.log('******************上送报文*****************')
-    console.log(config)
+    // console.log('******************上送报文*****************')
+    let data = config.data ? config.data : (config.params ? config.params : "{}")
+    // console.log(JSON.parse(data))
     return config
   }, function (error) {
     return Promise.reject(error)
   })
   service.interceptors.response.use(function (response) {
-    console.log('******************返回报文*****************')
+    // console.log('******************返回报文*****************')
     let data = response.data
     data.status = response.status
-    console.log(data)
+    // console.log(data)
     return data
   }, function (error) {
     return Promise.reject(error)

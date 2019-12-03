@@ -7,7 +7,7 @@
             <span>请选择查询条件：</span>
           </a-col>
           <a-col :span="3">
-            <a-select defaultValue="出题者" style="width: 160px;" @change="handleChangeAuthor">
+            <a-select mode="multiple" placeholder="出题者" style="width: 160px;" @change="handleChangeAuthor">
               <a-select-option  v-for="(item, index) in authors" :key="item+index" :value="item.id">
                 <span><img src="" /></span>
                 <span>{{item.name}}</span>
@@ -16,14 +16,14 @@
           </a-col>
           <a-col :span="3">
             <span></span>
-            <a-select defaultValue="难度" style="width: 160px;" @change="handleChangeLevel">
+            <a-select mode="multiple" placeholder="难度" style="width: 160px;" @change="handleChangeLevel">
               <a-select-option  v-for="(item, index) in levels" :key="item+index" :value="item.level">
                 <span :class="item.icon"></span> {{item.value}}
               </a-select-option>
             </a-select>
           </a-col>
           <a-col :span="3">
-            <a-select defaultValue="编程语言" style="width: 160px;" @change="handleChangeLang">
+            <a-select mode="multiple" placeholder="编程语言" style="width: 160px;" @change="handleChangeLang">
               <a-select-option  v-for="(item, index) in programLangs" :key="item+index" :value="item.value">
                 <span :class="item.icon"></span> {{item.value}}
               </a-select-option>
@@ -40,14 +40,15 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'serch-work',
   data () {
     return {
-      langType: '',
-      selectDate: '',
-      qUserId: '',
-      level: '',
+      langType: [],
+      selectDate: [],
+      qUserId: [],
+      level: [],
       programLangs: [
         {
           value: 'html',
@@ -99,8 +100,14 @@ export default {
         this.authors = res.data.filter(item => item.role === '2')
       }
     })
+    this.getQuestionLists()
   },
   watch: {
+  },
+  computed: {
+    ...mapState({
+      user: state => state.user.user
+    })
   },
   methods: {
     handleChangeLang (item) {
@@ -120,11 +127,13 @@ export default {
     },
     getQuestionLists () {
       let data = {
-        teacherId: this.qUserId,// 出题者
-        userId: this.qUserId,// 答题者
-        createTime: this.selectDate,
-        langType: this.langType,
-        level: this.level
+        teacherId: this.qUserId.join(''), // 出题者
+        startTime: this.selectDate[0],
+        endTime: this.selectDate[1],
+        langType: this.langType.join(''),
+        level: this.level.join(''),
+        studentId: this.user.info.id
+
       }
       this.$axios.post('question/partLists', data).then(res => {
         if (res && res.code === '000000') {
@@ -135,8 +144,12 @@ export default {
           })
           this.$emit('getData', data)
         } else {
+          this.$emit('getData', [])
           this.$message.error('题目查询失败')
         }
+      }).catch(err => {
+        this.$emit('getData', [])
+        this.$message.error(`题目查询失败${err}`)
       })
     }
   }
