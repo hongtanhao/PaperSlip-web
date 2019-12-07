@@ -1,21 +1,25 @@
 <template>
   <div class="side-nav" ref="side-nav">
-    <ul style="padding-top:2rem">
-      <li v-for="(item, index) in sideNavs"
-        :key="item+index"
-        class="main-meau-li"
-        >
-        <span :class="{[item.icon]: true, activated: item.isActivated}"></span>&nbsp;&nbsp;
+    <out-links/>
+    <ul style="padding-top:2rem; margin-left: 60px">
+      <li v-for="(item, index) in sideNavs" :key="item+index" class="main-meau-li">
+        <span :class="{[item.icon]: true, activated: item.isActivated}"></span>
         {{item.text}}&nbsp;&nbsp;
-        <span @click.self="handleClick(item)" :class="item.isShowChild ? 'iconfont icon-arrDnR-fill' : 'iconfont icon-right'">
-        </span>
+        <span
+          @click.self="handleClick(item)"
+          :class="item.isShowChild ? 'iconfont icon-arrDnR-fill' : 'iconfont icon-right'"
+        ></span>
         <ul class="child-ul" v-show="item.isShowChild">
-          <li v-for="(itemChild, indexCh) in item.children" :key="itemChild+indexCh"
-              :class="{LichildActivated: itemChild.isActivated}"
-              @click="handleChildClick(item, itemChild)">
-              <router-link :class="{'self-router-link': true, childActivated: itemChild.isActivated}" :to="{path: itemChild.path}">
-                {{itemChild.text}}
-              </router-link>
+          <li
+            v-for="(itemChild, indexCh) in item.children"
+            :key="itemChild+indexCh"
+            :class="{LichildActivated: itemChild.isActivated}"
+            @click="handleChildClick(item, itemChild)"
+          >
+            <router-link
+              :class="{'self-router-link': true, childActivated: itemChild.isActivated}"
+              :to="{path: itemChild.path}"
+            >{{itemChild.text}}</router-link>
           </li>
         </ul>
       </li>
@@ -24,7 +28,9 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import OutLinks from './OutLinks.vue'
 export default {
+  components: {OutLinks},
   data () {
     return {
       sideNavs: [],
@@ -58,24 +64,24 @@ export default {
           text: '我的作业',
           isShowChild: true,
           children: [
-            // {
-            //   icon: '',
-            //   text: '已完成',
-            //   path: '/index/didAssignment',
-            //   isActivated: false
-            // },
+            {
+              icon: '',
+              text: '已完成',
+              path: '/index/didAssignment',
+              isActivated: false
+            },
             {
               icon: '',
               text: '做作业',
               path: '/index/list',
               isActivated: true
+            },
+            {
+              icon: '',
+              text: '需请教',
+              path: '/index/',
+              isActivated: false
             }
-            // {
-            //   icon: '',
-            //   text: '需请教',
-            //   path: '/index/',
-            //   isActivated: false
-            // }
           ]
         }
         // {
@@ -159,48 +165,51 @@ export default {
 }
 </script>
 <style scoped>
-
 .side-nav {
   height: 100%;
-  background-color: rgb(51,51,51);
+  background-color: rgb(51, 51, 51);
   color: #bbbbbb;
   text-align: left;
-  padding-left: 2rem;
 }
 
 .side-nav ul {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 .side-nav ul li {
-    line-height: 1.5rem;
-    cursor: pointer;
+  line-height: 1.5rem;
+  cursor: pointer;
 }
 
 .child-ul {
-    padding: .5rem 0 .5rem 3rem;
+  padding: 0.5rem 0 0.5rem 2rem;
+  box-sizing: border-box;
 }
 .child-ul > li {
-    line-height: 1.5rem;
+  line-height: 1.5rem;
 }
 
 .LichildActivated {
-    border-right: 4px solid seagreen;
-    /* border-radius: 100%; */
+  border-right: 4px solid seagreen;
 }
 
 .self-router-link {
-    text-decoration: none;
-    color: #bbbbbb;
+  text-decoration: none;
+  color: #bbbbbb;
+}
+.self-router-link {
+  /* border-left: 1px solid #eee; */
+  padding-left: 1rem;
 }
 
-.self-router-link:hover, .self-router-link:active, .childActivated {
-    text-decoration: none;
-    color: seagreen;
+.self-router-link:hover,
+.self-router-link:active,
+.childActivated {
+  text-decoration: none;
+  color: seagreen;
 }
 
 .activated {
-   color: seagreen;
+  color: seagreen;
 }
-
 </style>

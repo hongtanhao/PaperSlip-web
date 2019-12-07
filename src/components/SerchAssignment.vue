@@ -1,7 +1,7 @@
 <template>
     <div class="serch-work">
       <div class="select-option">
-        <a-row type="flex" justify="space-around" align="middle">
+        <a-row type="flex" justify="space-between" align="middle">
           <a-col :span="3">
             <span class="iconfont icon-tiaojian" style="fontSize: 12px"></span>&nbsp;
             <span>请选择查询条件：</span>
@@ -32,8 +32,8 @@
           <a-col :span="10">
             <a-range-picker  @change="handleChangeDate" />
           </a-col>
-          <a-col :span="2">
-            <a-button type="primary" style="text-align: right" @click="handleQueryQuestion">查找</a-button>
+          <a-col :span="2" style="text-align: right">
+            <a-button type="primary"  @click="handleQueryQuestion"><img src="/static/images/search.svg" width="30">&nbsp;&nbsp;查找</a-button>
           </a-col>
         </a-row>
       </div>
@@ -132,7 +132,7 @@ export default {
         endTime: this.selectDate[1],
         langType: this.langType.join(''),
         level: this.level.join(''),
-        studentId: this.user.info.id
+        studentId: this.user.info && this.user.info.id
 
       }
       this.$axios.post('question/partLists', data).then(res => {

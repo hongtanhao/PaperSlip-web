@@ -1,7 +1,7 @@
 <template>
   <div class="assignment-list">
     <a-row type="flex" justify="center">
-      <a-col>
+      <a-col :span="24">
         <a-table bordered :columns="columns" :dataSource="topicLists" :scroll="scroll">
           <a slot="action" slot-scope="record, index" @click.self="startDoAssign(record, index)">浏览</a>
         </a-table>
@@ -22,7 +22,7 @@ export default {
         { title: '序号', dataIndex: 'order', key: 'order', width: 150 },
         { title: '作者', dataIndex: 'name', key: 'name', width: 150 },
         { title: '编程语言', dataIndex: 'langType', key: 'langType', width: 150 },
-        { title: '创建时间', dataIndex: 'createTime', key: 'createTime', width: 150 },
+        { title: '创建时间', dataIndex: 'createTime', key: 'createTime', width: 200 },
         { title: '题目', dataIndex: 'topicContent', key: 'topicContent', width: 650 },
         { title: '等级', dataIndex: 'level', key: 'level', width: 150 },
         {
@@ -34,6 +34,10 @@ export default {
     }
   },
   mounted () {
+    window.addEventListener('resize', () => {
+      this.scroll.y = window.innerHeight - 300
+    }, false)
+    this.scroll.y = window.innerHeight - 300
   },
   computed: {
     topicLists () {

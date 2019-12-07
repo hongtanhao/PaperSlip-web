@@ -4,12 +4,12 @@
       <a-row type="flex">
         <a-col :span="12">
           <div class="logo">
-            <span class="iconfont icon-changjianwenti">AssignmentSystem</span>
+            <span>积跬步，至千里</span>
           </div>
         </a-col>
         <a-col :offset="10" :span="2" style="text-align: right">
           <a-dropdown>
-            <p class="avarta ant-dropdown-link" href="#"><img src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"  width="20px"/> <span style="color: seagreen">{{user.info.name}}</span><a-icon type="down" /> </p>
+            <p class="avarta ant-dropdown-link" href="#"><img src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"  width="20px"/> <span style="color: seagreen">{{user.name}}</span><a-icon type="down" /> </p>
             <a-menu slot="overlay">
               <a-menu-item key="0">
                 <p><span class="iconfont icon-sinaweibo18 pos"></span>设置</p>
@@ -25,12 +25,12 @@
     </div>
 </template>
 <script>
-import {mapState} from 'vuex'
+import Storage from '@/utils/storage.js'
 export default {
-  computed: {
-    ...mapState({
-      user: state => state.user.user
-    })
+  data () {
+    return {
+      user: Storage.get('user')
+    }
   },
   methods: {
     handleQuit () {
@@ -54,5 +54,9 @@ export default {
 
 .avarta {
   cursor: pointer;
+}
+
+.logo {
+  margin-left: 40px;
 }
 </style>

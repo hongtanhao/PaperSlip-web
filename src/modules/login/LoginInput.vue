@@ -13,6 +13,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import UserRegister from '../register/index'
+import Storage from '@/utils/storage.js'
 export default {
   name: 'login',
   data () {
@@ -65,6 +66,7 @@ export default {
             }
             // 缓存用户信息
             this['user/SET_USER']({value: user})
+            Storage.set('user', user)
             if (this.user.mode === '1') {
               this.$router.push('/index/list')
             } else if (this.user.mode === '2') {

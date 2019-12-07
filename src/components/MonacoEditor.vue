@@ -44,7 +44,8 @@ export default {
           text: 'High Contrast Dark'
         }
       ],
-      code: ''
+      code: '',
+      editorContent: ''
     }
   },
   computed: {
@@ -83,6 +84,11 @@ export default {
         this.editor = monaco.editor.create(document.getElementById('editor'), {
           model: null
         })
+        this.editor.onDidChangeModelContent((event) => {
+          const newValue = this.editor.getValue();
+          console.log(newValue)
+          this.editorContent = newValue
+        })
         window.onresize = () => {
           if (this.editor) {
             this.editor.layout()
@@ -94,7 +100,7 @@ export default {
       return this.editor.getModel()
     },
     getContent () {
-      return this.editor._domElement.innerText
+      return this.editorContent
     },
     setMode (modeId) {
       this.currentMOde = modeId
