@@ -27,8 +27,8 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
 import OutLinks from './OutLinks.vue'
+import Storage from '@/utils/storage.js'
 export default {
   components: {OutLinks},
   data () {
@@ -130,16 +130,16 @@ export default {
     }
   },
   computed: {
-    ...mapState('user', {
-      user: state => state.user
-    })
+    user () {
+      return Storage.get('user')
+    }
   },
   mounted () {
     this.$refs['side-nav'].style.height = (window.innerHeight - 60) + 'px'
     if (this.user) {
-      if (this.user.mode === '1') {
+      if (this.user.role === '1') {
         this.sideNavs = this.clientSideNavs
-      } else if (this.user.mode === '2') {
+      } else if (this.user.role === '2') {
         this.sideNavs = this.adminSideNavs
       } else {
         this.$message.info('用户身份可疑！！')

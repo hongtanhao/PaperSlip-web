@@ -31,7 +31,7 @@ export default {
     }
   },
   mounted () {
-    this.$refs['right-main'].style.backgroundColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.3)`
+    this.$refs['right-main'].style.backgroundColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.1)`
     this.$refs['right-main'].style.height = (window.innerHeight - 60) + 'px'
   },
   methods: {

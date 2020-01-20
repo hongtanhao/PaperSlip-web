@@ -14,7 +14,7 @@ import '../static/css/reset.css'
 import 'jquery'
 import './utils/dateUtil'
 
-import { Avatar, Row, Col, DatePicker, Select, Button, Input, Icon, Table, Dropdown, Menu, Tabs, Modal, Radio, message, Steps, Popover } from 'ant-design-vue'
+import { Avatar, Row, Col, DatePicker, Select, Button, Input, Icon, Table, Form, Checkbox, Dropdown, Menu, Tabs, Modal, Radio, message, Steps, Popover, Switch, Progress, Tag } from 'ant-design-vue'
 
 Vue.use(axiosPlugin)
 
@@ -27,6 +27,8 @@ Vue.use(Button)
 Vue.use(Input)
 Vue.use(Icon)
 Vue.use(Table)
+Vue.use(Form)
+Vue.use(Checkbox)
 Vue.use(Dropdown)
 Vue.use(Menu)
 Vue.use(Tabs)
@@ -34,6 +36,9 @@ Vue.use(Modal)
 Vue.use(Radio)
 Vue.use(Steps)
 Vue.use(Popover)
+Vue.use(Switch)
+Vue.use(Progress)
+Vue.use(Tag)
 
 Vue.prototype.$message = message
 Vue.prototype.$confirm = Modal.confirm

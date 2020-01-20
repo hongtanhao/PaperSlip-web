@@ -1,16 +1,55 @@
 <template>
   <div class="login-input">
-    <a-input class="gutter-vertical" placeholder="请输入用户名" v-model="userName" ref="userNameInput">
-       <a-icon slot="prefix" type="user" />
-    </a-input>
-    <a-input class="gutter-vertical" type="password" placeholder="请输入密码" v-model="password" ref="passwordInput">
-       <a-icon slot="prefix" type="key" />
-    </a-input>
-    <p class="rgister-btn" @click="handleRegister"><a>没有账号，注册一个？</a></p>
-    <a-button type="primary" style="margin-top: 2rem; width: 100%" @click="handleLogin">登录</a-button>
+    <div class="login-dialog">
+      <div class="title">
+        <p class="rgister-btn">
+          <a @click="handleRegister">没有账号？</a>
+          <span @click="$router.push('/')" class="cancel">x</span>
+        </p>
+      </div>
+      <div style="padding: 2rem; text-align:center">
+        <a-form id="components-form-demo-normal-login" :form="form" class="login-form">
+          <a-form-item>
+            <a-input
+              v-decorator="[
+          'userName',
+          { rules: [{ required: true, message: '请输入您的用户名!' }] },
+        ]"
+              placeholder="用户名"
+            >
+              <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
+            </a-input>
+          </a-form-item>
+          <a-form-item>
+            <a-input
+              v-decorator="[
+          'password',
+          { rules: [{ required: true, message: '请输入您的密码！' }] },
+        ]"
+              type="password"
+              placeholder="密码"
+            >
+              <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
+            </a-input>
+          </a-form-item>
+          <a-form-item>
+            出题模式：
+            <a-switch  @change="onChange" />
+          </a-form-item>
+          <a-form-item>
+            友情提示：您注册的时角色如果选的是出题者，则需要开启出题模式
+          </a-form-item>
+          <a-form-item style="margin-top: 2rem">
+            <a class="login-form-forgot" href>忘记密码？</a>
+            <a-button type="primary" @click="handleLogin" class="login-form-button">登录</a-button>
+          </a-form-item>
+        </a-form>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+/* eslint-disable */
 import { mapState, mapMutations } from 'vuex'
 import UserRegister from '../register/index'
 import Storage from '@/utils/storage.js'
@@ -19,57 +58,60 @@ export default {
   data () {
     return {
       userName: '',
-      password: ''
+      password: '',
+      questionMode: false
     }
   },
-  components: {UserRegister},
+  components: { UserRegister },
   computed: {
     ...mapState({
       user: state => state.user.user
     })
+  },
+  beforeCreate () {
+    this.form = this.$form.createForm(this, { name: 'normal_login' })
   },
   methods: {
     ...mapMutations([
       'user/SET_USER'
     ]),
     handleLogin () {
-      if (this.user) {
-        if (!this.userName) {
-          this.$message.warning('请输入用户名！')
-          return
+      this.form.validateFields((err, values) => {
+        if (!err) {
         }
-        if (!this.password) {
-          this.$message.warning('请输入用户密码！')
-          return
-        }
-        this.login()
-      }
+        this.login(values)
+      })
+    },
+    onChange (checked) {
+      this.questionMode = checked
     },
     handleRegister () {
-      this.$router.push({path: '/register'})
+      this.$router.push({ path: '/register' })
     },
-    login () {
-      this.$axios.post('user/oneList', {name: this.userName}).then(response => {
+    login (values) {
+      this.$axios.post('user/oneList', { name: values.userName }).then(response => {
         if (response && response.code === '000000') {
           if (response.data && response.data.length === 1) {
             let user = response.data[0]
             // 校验密码
             // eslint-disable-next-line
-            if ($.md5(this.password) !== user.password) {
+            if ($.md5(values.password) !== user.password) {
               this.$message.warning('用户密码不正确, 请重新输入！')
               return
             }
             // 校验模式
-            if (this.user.mode !== user.role) {
-              this.$message.warning('你选择的登录模式不对, 请重新选择！')
-              return
+            if (this.questionMode) {
+              if (user.role != '2') {
+                this.$message.warning('你选择的登录模式不对, 请重新选择！')
+                return
+              }
             }
             // 缓存用户信息
-            this['user/SET_USER']({value: user})
+            this['user/SET_USER']({ value: user })
             Storage.set('user', user)
-            if (this.user.mode === '1') {
+            if (user.role === '1') {
               this.$router.push('/index/list')
-            } else if (this.user.mode === '2') {
+            } else if (user.role === '2') {
               this.$router.push('/index/question')
             } else {
               this.$message.warning('登录系统的模式不支持！')
@@ -85,7 +127,7 @@ export default {
               onOk () {
                 that.$router.push('/register')
               },
-              onCancel () {}
+              onCancel () { }
             })
           }
         } else {
@@ -98,16 +140,55 @@ export default {
 </script>
 <style scoped>
 .login-input {
-  width: 240px;
-  height: 300px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: relative;
 }
 
-.rigister-btn {}
+.login-dialog {
+  width: 520px;
+  height: 450px;
+  background-color: #ffffff;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+}
 
 .gutter-vertical {
   margin-bottom: 1rem;
   opacity: 1;
   color: #bbb;
   background: transparent;
+}
+
+.title {
+  border-bottom: 1px solid #ccccee;
+}
+
+.rgister-btn {
+  text-align: left;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  line-height: 40px;
+  margin: 0;
+}
+.cancel {
+  position: absolute;
+  right: 2rem;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.login-form {
+  text-align: left;
+}
+.login-form-forgot {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
 }
 </style>

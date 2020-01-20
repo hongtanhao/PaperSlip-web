@@ -18,19 +18,21 @@
 <script>
 import AssignmentTopic from '@/components/AssignmentTopic'
 import MonacoEditor from '@/components/MonacoEditor'
+import Storage from '@/utils/storage.js'
 import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'editing-assignment',
   components: { AssignmentTopic, MonacoEditor },
   data () {
     return {
-      notEnable: false
+      notEnable: false,
+      user: Storage.get('user')
     }
   },
   computed: {
     ...mapState({
-      work: state => state.assignment.work,
-      user: state => state.user.user
+      work: state => state.assignment.work
+      // user: state => state.user.user
     })
   },
   beforeRouteEnter (to, from, next) {
@@ -70,35 +72,35 @@ export default {
       this.notEnable = true
       let data = {
         id: 'ASSIGN_ANSWER' + new Date().format('YYYYMMDDhhmmss') + new Date().getTime(),
-        studentId: this.user.info.id,
+        studentId: this.user.id,
         teacherId: this.work.teacherId,
         questionId: this.work.id,
         answerContent: this.$refs['editor'].getContent(),
         firstCreateTime: new Date().format('YYYY-MM-DD hh:mm:ss'),
-        checkStatus: '0'
+        checkStatus: '1'
       }
       if (data.answerContent) {
-        if (this.work.answerContent) {
+        if (this.work.checkStatus && this.work.checkStatus !== '0') {
           data.id = this.work.answerId
           data.lastModifyTime = new Date().format('YYYY-MM-DD hh:mm:ss')
           this.$axios.post('answer/update', data).then(res => {
             if (res && res.code === '000000') {
-              this.$message.success('答案提交成功')
+              this.$message.success('答案更新成功')
             } else {
-              this.$message.success('答案提交失败')
+              this.$message.success('答案更新失败')
             }
           })
         } else {
           this.$axios.post('answer/save', data).then(res => {
             if (res && res.code === '000000') {
-              this.$message.success('答案提交成功')
+              this.$message.success('答案保存成功')
             } else {
-              this.$message.success('答案提交失败')
+              this.$message.success('答案保存失败')
             }
           })
         }
       } else {
-        this.$message.errror('抱歉，未能正确获取目标文本内容, 请尝试摁下任意键再试')
+        this.$message.error('抱歉，未能正确获取目标文本内容, 请尝试摁下任意键再试')
       }
     }
   }

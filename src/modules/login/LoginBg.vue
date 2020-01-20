@@ -1,5 +1,5 @@
 <template>
-    <div id="loginBg">
+    <div id="loginBg" ref="loginBg">
     </div>
 </template>
 <script>
@@ -107,10 +107,19 @@ export default {
         render();
         animate();
     })()
+    this.$refs['loginBg'].style.marginTop = '-100px'
+    $('#loginBg canvas').height(window.innerHeight + 100)
+    window.addEventListener('resize', () => {
+      $('#loginBg canvas').height(window.innerHeight + 100)
+    })
   }
 }
 </script>
 <style scoped>
+
+#loginBg {
+    position: relative;
+}
 a {
     color: #f00;
 }

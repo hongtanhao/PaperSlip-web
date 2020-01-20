@@ -3,8 +3,8 @@
       <a-row type="flex" justify="end">
         <a-col :span="12" style="text-align: right">
           <a-button type="primary" @click="replaceTopic"><span class="iconfont icon-huan pos"></span>换题</a-button>
-          <a-button type="primary" @click="handleCheck('2')"><span class="iconfont icon-jujue pos"></span>驳回</a-button>
-          <a-button type="primary" @click="handleCheck('1')"><span class="iconfont icon-tongguo1 pos"></span>通过</a-button>
+          <a-button type="primary" @click="handleCheck('3')"><span class="iconfont icon-jujue pos"></span>驳回</a-button>
+          <a-button type="primary" @click="handleCheck('2')"><span class="iconfont icon-tongguo1 pos"></span>通过</a-button>
         </a-col>
        </a-row>
       <a-row :span='24' justify="start">
@@ -56,7 +56,7 @@ export default {
     },
     handleCheck (status) {
       let data = {
-        checkStatus: status === '1' ? '1' : '2',
+        checkStatus: status,
         studentId: this.work.studentId,
         id: this.work.id,
         answerContent: this.work.answerContent

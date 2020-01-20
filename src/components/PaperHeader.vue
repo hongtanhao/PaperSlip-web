@@ -4,7 +4,7 @@
       <a-row type="flex">
         <a-col :span="12">
           <div class="logo">
-            <span>积跬步，至千里</span>
+            <span style="color: seagreen">积跬步，至千里</span>
           </div>
         </a-col>
         <a-col :offset="10" :span="2" style="text-align: right">

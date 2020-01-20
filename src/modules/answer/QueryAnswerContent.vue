@@ -24,14 +24,23 @@
         <a-col :span="10">
           <a-range-picker @change="handleChangeDate" />
         </a-col>
-        <a-col :span="2">
-          <a-button type="primary" style="text-align: right" @click="handleQueryQuestion">查找</a-button>
+        <a-col :span="8" style="text-align: right">
+          <a-button type="primary" @click="handleQueryQuestion">查找</a-button>
         </a-col>
       </a-row>
     </div>
     <div>
       <div class="assignment-list">
         <a-table :columns="columns" :dataSource="answerContents" :scroll="scroll">
+          <span slot="tags" slot-scope="tags">
+            <a-tag
+              v-for="tag in tags"
+              :color="tag==='3' ? 'red' : (tag==='2' ? 'seagreen' : (tag==='1' ? 'purple' : 'orange'))"
+              :key="tag"
+            >
+              {{tag == '3' ? '被驳回' : (tag === '2' ? '已审过' : (tag === '1' ? '待审查' : '未答题'))}}
+            </a-tag>
+          </span>
           <a slot="action" slot-scope="record, index" @click.self="check(record, index)">批改</a>
         </a-table>
       </div>
@@ -98,6 +107,13 @@ export default {
         { title: '答题者', width: 100, dataIndex: 'name', key: 'name' },
         { title: '答案内容', dataIndex: 'answerContent', key: 'answerContent', width: 650 },
         {
+          title: '状态',
+          key: 'tags',
+          dataIndex: 'tags',
+          width: 100,
+          scopedSlots: { customRender: 'tags' }
+        },
+        {
           title: '操作',
           key: 'operation',
           width: 100,
@@ -115,6 +131,12 @@ export default {
       }
     })
     this.getAnsewerLists()
+  },
+  mounted () {
+    window.addEventListener('resize', () => {
+      this.scroll.y = window.innerHeight - 300
+    }, false)
+    this.scroll.y = window.innerHeight - 300
   },
   watch: {
   },
@@ -150,6 +172,7 @@ export default {
           let data = res.data.map((item, index) => {
             item.key = index
             item.order = index + 1
+            item.tags = [item.checkStatus]
             return item
           })
           this.answerContents = data

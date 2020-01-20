@@ -78,6 +78,9 @@ export default {
     this.setTheme(1)
     this.editor.layout()
   },
+  beforeDestroy () {
+    this.editor.dispose()
+  },
   methods: {
     createEditor () {
       if (!this.editor) {
@@ -86,7 +89,6 @@ export default {
         })
         this.editor.onDidChangeModelContent((event) => {
           const newValue = this.editor.getValue();
-          console.log(newValue)
           this.editorContent = newValue
         })
         window.onresize = () => {
@@ -120,6 +122,7 @@ export default {
     },
     handleChangeLangMode (item) {
       this.currentMOdeIndex = item
+      this.code = this.editor.getValue()
       this.setMode(this.langModes[item].modeId)
     },
     handleChangeTheme (theme) {

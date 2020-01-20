@@ -33,14 +33,15 @@
             <a-range-picker  @change="handleChangeDate" />
           </a-col>
           <a-col :span="2" style="text-align: right">
-            <a-button type="primary"  @click="handleQueryQuestion"><img src="/static/images/search.svg" width="30">&nbsp;&nbsp;查找</a-button>
+            <a-button type="primary"  @click="handleQueryQuestion">查找&nbsp;&nbsp;&nbsp;&nbsp;<img src="/static/images/search.svg" width="20"></a-button>
           </a-col>
         </a-row>
       </div>
     </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+// import { mapState } from 'vuex'
+import Storage from '@/utils/storage.js'
 export default {
   name: 'serch-work',
   data () {
@@ -90,7 +91,8 @@ export default {
         }
       ],
       authors: [
-      ]
+      ],
+      user: Storage.get('user')
     }
   },
   created () {
@@ -105,9 +107,9 @@ export default {
   watch: {
   },
   computed: {
-    ...mapState({
-      user: state => state.user.user
-    })
+    // ...mapState({
+    //   user: state => state.user.user
+    // })
   },
   methods: {
     handleChangeLang (item) {
@@ -135,12 +137,21 @@ export default {
         studentId: this.user.info && this.user.info.id
 
       }
-      this.$axios.post('question/partLists', data).then(res => {
+      this.$axios.post('question/partLists', data).then(async res => {
         if (res && res.code === '000000') {
+          let answerRet = await this.getAnswerLists()
           let data = res.data.map((item, index) => {
             item.key = index
             item.order = index + 1
+            item.tags = [0]
             return item
+          })
+          data.forEach(item1 => {
+            answerRet.forEach(item2 => {
+              if (item1.id === item2.questionId) {
+                item1.tags = [item2.checkStatus]
+              }
+            })
           })
           this.$emit('getData', data)
         } else {
@@ -151,6 +162,18 @@ export default {
         this.$emit('getData', [])
         this.$message.error(`题目查询失败${err}`)
       })
+    },
+    async getAnswerLists () {
+      let data = {
+        studentId: this.user.id
+      }
+      let result = await this.$axios.post('answer/partLists', data)
+      if (result && result.code === '000000') {
+        return result.data
+      } else {
+        this.$message.error(`答案查询失败`)
+        return []
+      }
     }
   }
 }

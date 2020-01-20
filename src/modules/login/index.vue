@@ -1,14 +1,17 @@
 <template>
   <div class="login">
     <login-bg/>
-    <login-msg/>
+    <!-- <login-msg/> -->
+    <login-index/>
+    <paper-footer/>
   </div>
 </template>
 <script>
 import LoginBg from './LoginBg'
-import LoginMsg from './LoginMsg'
+import PaperFooter from '@/components/PaperFooter'
+import LoginIndex from './LoginIndex.vue'
 export default {
-  components: {LoginBg, LoginMsg},
+  components: {LoginBg, LoginIndex, PaperFooter},
   name: 'login',
   data () {
     return {

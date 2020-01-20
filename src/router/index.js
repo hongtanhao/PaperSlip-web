@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Register from '@/modules/register'
 import Login from '@/modules/login'
+import LoginMain from '@/modules/login/LoginMain.vue'
 import Index from '@/pages/Index'
 import Question from '@/modules/question'
 import Answer from '@/modules/answer'
@@ -19,7 +20,7 @@ export default new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: LoginMain
     },
     {
       path: '/register',
